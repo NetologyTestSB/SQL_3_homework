@@ -78,7 +78,7 @@ VALUES
 	('Animals', 1977),
 	('The Wall', 1979),
 	('Галя, ходи', 2018), --ддт
-	('Дети портвейна', 2019) --ундервуд
+	('Дети портвейна', 2019), --ундервуд
 	('Frank Sinatra Greatest Hits', 1968),
 	('Sinatra: Best of the Best Greatest Hits', 2011)		
 ;	
@@ -159,7 +159,7 @@ VALUES
 -- the beatles	
 	('Sgt. Pepper’s Lonely Hearts Club Band',  122, 7),
 	('With a Little Help from My Friends',  162, 7),
-	('Being for the Benefit of Mr. Kite!',  , 7),
+	('Being for the Benefit of Mr. Kite!', 154 , 7),
 	('When I’m Sixty Four',  156, 7),
 	('A Day in the Life',  337, 7),
 	('Yellow Submarine',  164, 8),
@@ -177,6 +177,7 @@ VALUES
 	('Le It Be', 243, 10),
 	('The Long and Winding Road', 217, 10),
 	('Get Back', 217, 10)
+;	
 	
 INSERT INTO album_artist (album_id, artist_id)
 VALUES

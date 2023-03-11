@@ -1,4 +1,3 @@
-
 --домашняя работа 07.03.23
 --1.Количество исполнителей в каждом жанре
 SELECT name_genre AS Жанр, COUNT(artist_id) AS Исполнителей
@@ -68,51 +67,23 @@ SELECT DISTINCT name_artist  AS Исполнители
   WHERE name_artist = 'Deep Purple'
 ;
 
-
 --6.Названия альбомов, в которых присутствуют исполнители более чем одного жанра.
---разъяснение от Елены Максимовой: В этой задаче имелись в виду сборники с участием нескольких исполнителей.
---переформулируем условие: Названия СБОРНИКОВ, в которых присутствуют исполнители более чем одного жанра.
-SELECT DISTINCT title_compilation AS Сборник
-  FROM compilation c 
- 	   JOIN compilation_track ct USING (compilation_id)
- 			JOIN track t USING (track_id)
- 				 JOIN album a USING (album_id)
- 					  JOIN album_artist aa USING (album_id)
- 						   JOIN artist a2 USING (artist_id)
- 						   		JOIN genre_artist ga USING (artist_id)
- 						   			 JOIN genre USING (genre_id)
- GROUP BY title_compilation  
-HAVING MAX(genre_id) <> MIN(genre_id) 
-;
--- в этот запрос попадают сборники от одного исполнителя Queen и Frank Sinatra, т.к. оба
---эти исполнителя приндлежат двум жанрам, что видно из следующего запроса:
-SELECT name_artist, name_genre
-  FROM artist a 
-	   JOIN genre_artist ga USING (artist_id)
-			JOIN genre g USING (genre_id)
-;			
-			
---6.Названия СБОРНИКОВ, с участием нескольких исполнителей.
-SELECT DISTINCT title_compilation AS Сборник, COUNT(DISTINCT name_artist) AS Количество_исполнителей
-  FROM compilation c 
- 	   JOIN compilation_track ct USING (compilation_id)
- 			JOIN track t USING (track_id)
- 				 JOIN album a USING (album_id)
- 					  JOIN album_artist aa USING (album_id)
- 						   JOIN artist a2 USING (artist_id)
- 						   		JOIN genre_artist ga USING (artist_id)
- 						   			 JOIN genre USING (genre_id)
- GROUP BY title_compilation  
-HAVING COUNT(DISTINCT name_artist) <> 1
+SELECT title_album AS Альбом, COUNT(genre_id) AS Кол_во_жанров_исполнителей
+  FROM album a
+  	   JOIN album_artist aa USING (album_id)
+  	   		JOIN artist a2 USING (artist_id)
+  	   			 JOIN genre_artist ga USING (artist_id)
+ GROUP BY title_album 
+HAVING COUNT(genre_id) > 1
 ;
 
 --7.Наименования треков, которые не входят в сборники.
-SELECT title_track AS Трек
+SELECT title_track as Трек
   FROM track t 
-WHERE track_id NOT IN (SELECT track_id 
-						 FROM compilation_track) 	   		
-;  	   		
-
+  	   LEFT JOIN compilation_track ct USING (track_id)
+ WHERE ct.track_id IS NULL 
+; 
+  	   
 --8.Исполнитель или исполнители, написавшие самый короткий по продолжительности трек, — теоретически таких треков может быть несколько.
 SELECT title_track AS Трек, name_artist AS Исполнитель
   FROM track t
@@ -138,4 +109,3 @@ HAVING COUNT(track_id) = (
 			 LIMIT 1
 			)
 ;
-
